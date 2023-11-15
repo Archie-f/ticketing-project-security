@@ -1,13 +1,30 @@
 package com.cydeo.service.impl;
 
 import com.cydeo.dto.RoleDTO;
+import com.cydeo.entity.Role;
+import com.cydeo.repository.RoleRepository;
 import com.cydeo.service.RoleService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RoleServiceImpl implements RoleService {
+
+    private final RoleRepository roleRepository;
+
+    public RoleServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
+
     @Override
     public List<RoleDTO> listAllRoles() {
+
+        //controller calls this method and requests all roles
+        //so... this method needs to go to data base and bring all the roles from there
+        List<Role> roleList = roleRepository.findAll();
+
+        //convert entity to DTO to be able to return - Mapper
         return null;
     }
 
