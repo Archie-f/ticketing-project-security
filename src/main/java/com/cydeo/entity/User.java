@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Data
@@ -20,8 +19,8 @@ public class User extends BaseEntity {
     private boolean enabled;
     private String phone;
 
-    @ManyToOne
-    @JoinColumn(name = "role-id")//This will automatically be created, actually. This is for practice purpose.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")//This will automatically be created, actually. This is for practice purpose.
     private Role role;
 
     @Enumerated(EnumType.STRING)
