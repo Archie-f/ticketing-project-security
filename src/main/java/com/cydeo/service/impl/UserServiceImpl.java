@@ -7,11 +7,13 @@ import com.cydeo.repository.UserRepository;
 import com.cydeo.service.UserService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -29,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findByUserName(String userName) {
-        return null;
+        return userMapper.convertToDto(userRepository.findByUserName(userName));
     }
 
     @Override
@@ -39,11 +41,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO update(UserDTO dto) {
-        return null;
+
+        //Find current user and capture the ID
+        User user = userRepository.findByUserName(dto.getUserName());
+        //map updated user dto to entity object
+        User convertedUser = userMapper.convertToEntity(dto);
+        //set ID to converted object
+        convertedUser.setId(user.getId());
+        //save updated user
+        userRepository.save(convertedUser);
+
+        return findByUserName(dto.getUserName());
     }
 
     @Override
-    public void deleteByUserName(UserDTO dto) {
-
+    public void deleteByUserName(String userName) {
+        userRepository.deleteByUserName(userName);
     }
+
+
 }
