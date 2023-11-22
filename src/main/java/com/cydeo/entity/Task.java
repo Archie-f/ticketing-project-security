@@ -1,7 +1,5 @@
 package com.cydeo.entity;
 
-import com.cydeo.dto.ProjectDTO;
-import com.cydeo.dto.UserDTO;
 import com.cydeo.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +19,7 @@ public class Task extends BaseEntity{
 
     private String taskSubject;
     private String taskDetail;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
