@@ -1,7 +1,7 @@
 package com.cydeo.service.impl;
 
 import com.cydeo.dto.RoleDTO;
-import com.cydeo.entity.Role;
+import com.cydeo.mapper.MapperUtil;
 import com.cydeo.mapper.RoleMapper;
 import com.cydeo.repository.RoleRepository;
 import com.cydeo.service.RoleService;
@@ -15,10 +15,12 @@ public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
     private final RoleMapper roleMapper;
+    private final MapperUtil mapperUtil;
 
-    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper) {
+    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper, MapperUtil mapperUtil) {
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
+        this.mapperUtil = mapperUtil;
     }
 
     @Override
@@ -27,11 +29,13 @@ public class RoleServiceImpl implements RoleService {
         //controller calls this method and requests all roles
         //so... this method needs to go to database and bring all the roles from there (roleRepository.findAll())
         //then we need to convert entity to DTO to be able to return - Mapper
-        return roleRepository.findAll().stream().map(roleMapper::convertToDto).collect(Collectors.toList());
+//        return roleRepository.findAll().stream().map(roleMapper::convertToDto).collect(Collectors.toList());
+        return roleRepository.findAll().stream().map(role -> mapperUtil.convert(role, new RoleDTO())).collect(Collectors.toList());
     }
 
     @Override
     public RoleDTO findById(Long id) {
-        return roleMapper.convertToDto(roleRepository.findById(id).get());
+//        return roleMapper.convertToDto(roleRepository.findById(id).get());
+        return mapperUtil.convert(roleRepository.findById(id).get(), new RoleDTO());
     }
 }
