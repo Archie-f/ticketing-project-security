@@ -73,15 +73,25 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void delete(String code) {
         Optional<Project> project = projectRepository.findByProjectCode(code);
-        project.get().setIsDeleted(true);
-        projectRepository.save(project.get());
+        if (project.isPresent()){
+            project.get().setIsDeleted(true);
+            project.get().setProjectCode(project.get().getProjectCode() + "-" + project.get().getId());
+            taskService.listAllByProjectId(project.get().getId())
+                    .forEach(taskDTO -> taskService.delete(taskDTO.getId()));
+            projectRepository.save(project.get());
+        }
     }
 
     @Override
     public void complete(String projectCode) {
         Optional<Project> project = projectRepository.findByProjectCode(projectCode);
-        project.get().setProjectStatus(Status.COMPLETE);
-        projectRepository.save(project.get());
+        if (project.isPresent()){
+            project.get().setProjectStatus(Status.COMPLETE);
+            taskService.listAllByProjectId(project.get().getId())
+                    .forEach(taskDto -> taskService.complete(taskDto.getId()));
+            projectRepository.save(project.get());
+        }
+
     }
 
     @Override

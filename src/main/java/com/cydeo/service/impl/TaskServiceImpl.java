@@ -51,7 +51,7 @@ public class TaskServiceImpl implements TaskService {
         if (task.isPresent()){
             convertedTask.setId(task.get().getId());
             convertedTask.setAssignedDate(task.get().getAssignedDate());
-            convertedTask.setTaskStatus(task.get().getTaskStatus());
+            convertedTask.setTaskStatus(dto.getTaskStatus() == null ? task.get().getTaskStatus() : dto.getTaskStatus());
             taskRepository.save(convertedTask);
         }
     }
@@ -74,4 +74,17 @@ public class TaskServiceImpl implements TaskService {
     public int totalCompletedTasks(String projectCode) {
         return taskRepository.totalCompletedTasks(projectCode);
     }
+
+    @Override
+    public List<TaskDTO> listAllByProjectId(Long id) {
+        return taskRepository.findAllByProject_Id(id).stream().map(taskMapper::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public void complete(Long id) {
+        Optional<Task> task = taskRepository.findById(id);
+        task.ifPresent(value -> value.setTaskStatus(Status.COMPLETE));
+    }
+
+
 }
