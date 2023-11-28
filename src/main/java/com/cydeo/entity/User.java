@@ -24,7 +24,7 @@ public class User extends BaseEntity {
     private boolean enabled;
     private String phone;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")//This will automatically be created, actually. This is for practice purpose.
     private Role role;
 
