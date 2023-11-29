@@ -103,15 +103,15 @@ public class ProjectServiceImpl implements ProjectService {
         UserDTO currentUserDto = userService.findByUserName(username);
         User user  = userMapper.convertToEntity(currentUserDto);
 
-//        List<Project> list = new ArrayList<>();
-//                String currentRole = user.getRole().getDescription();
-//        if(currentRole.equals("Manager")){
-//            list = projectRepository.findAllByAssignedManager(user);
-//        } else if (currentRole.equals("Admin")) {
-//            list = projectRepository.findAll();
-//        }
+        List<Project> list = new ArrayList<>();
+                String currentRole = user.getRole().getDescription();
+        if(currentRole.equals("Manager")){
+            list = projectRepository.findAllByAssignedManager(user);
+        } else if (currentRole.equals("Admin")) {
+            list = projectRepository.findAll();
+        }
 
-        List<Project> list = projectRepository.findAllByAssignedManager(user);
+//        List<Project> list = projectRepository.findAllByAssignedManager(user);
 
         return list.stream().map(project -> {
             ProjectDTO obj = projectMapper.convertToDto(project);
