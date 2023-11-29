@@ -12,8 +12,10 @@ import com.cydeo.repository.TaskRepository;
 import com.cydeo.service.ProjectService;
 import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,8 +99,17 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectDTO> listAllProjectDetails() {
 
-        UserDTO currentUserDto = userService.findByUserName("mike@mikey.com");
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDTO currentUserDto = userService.findByUserName(username);
         User user  = userMapper.convertToEntity(currentUserDto);
+
+//        List<Project> list = new ArrayList<>();
+//                String currentRole = user.getRole().getDescription();
+//        if(currentRole.equals("Manager")){
+//            list = projectRepository.findAllByAssignedManager(user);
+//        } else if (currentRole.equals("Admin")) {
+//            list = projectRepository.findAll();
+//        }
 
         List<Project> list = projectRepository.findAllByAssignedManager(user);
 
