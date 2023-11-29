@@ -18,6 +18,8 @@ public class SecurityConfig {
         this.authSuccessHandler = authSuccessHandler;
     }
 
+
+
     /*@Bean
     public UserDetailsService userDetailsService(PasswordEncoder encoder){
 
@@ -38,7 +40,7 @@ public class SecurityConfig {
 //                .antMatchers("/user/**").hasRole("Admin")
                 .antMatchers("/user/**").hasAuthority("Admin")
 //                .antMatchers("/project/**").hasRole("MANAGER")
-                .antMatchers("/project/**").hasAnyRole("Admin","Manager")
+                .antMatchers("/project/**").hasAnyAuthority("Admin","Manager")
                 .antMatchers("/task/employee/**").hasRole("Employee")
                 .antMatchers("/task/**").hasRole("Manager")
 //                .antMatchers("/task/**").hasAnyRole("EMPLOYEE","ADMIN")
